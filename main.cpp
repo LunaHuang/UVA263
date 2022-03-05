@@ -5,8 +5,9 @@
 #include <exception>
 #include <math.h>
 
+#ifdef TEST_CASE
 #include <gtest/gtest.h>
-
+#endif
 std::vector<int> NumberSplit(int number)
 {
 	std::vector<int> vSplit;
@@ -91,6 +92,7 @@ static void TestFunction(int max, int min)
 
 }
 
+#ifdef TEST_CASE
 TEST(testCase, test0){
     int number = 45321;
     std::vector<int> v = NumberSplit(number);
@@ -114,9 +116,11 @@ TEST(testCase, test2){
     EXPECT_EQ(HBubbleSort(v),654332);
 //    EXPECT_EQ(HBubbleSort(v),564332); // fail test
 }
+#endif
 
+static int input_number = 0;
 int main(int argc, char **argv) {
-    int ret;
+/*
     if( argc != 2) {
 		std::cout << "Please input one number " << std::endl;
 		return false;
@@ -125,14 +129,24 @@ int main(int argc, char **argv) {
 		std::cout << "Incorrect input, please input number " << std::endl;
 		return false;
 	}
-
-    testing::InitGoogleTest(&argc, argv);
-    ret = RUN_ALL_TESTS();
     int input_number = atoi(argv[1]);
-    std::cout << "Original number was " << input_number <<std::endl;
-    std::vector<int> r_v = NumberSplit(input_number);
-    TestFunction(HBubbleSort(r_v), LBubbleSort(r_v));
-    std::cout << "Chain length " << chain << std::endl;
+*/
+
+#ifndef TEST_CASE
+    while( std::cin >> input_number ){
+	    std::cout << std::endl;
+        std::cout << "Original number was " << input_number <<std::endl;
+        std::vector<int> r_v = NumberSplit(input_number);
+        TestFunction(HBubbleSort(r_v), LBubbleSort(r_v));
+        std::cout << "Chain length " << chain << std::endl;
+        chain = 0;
+        input_number = 0;
+        leaves.clear();
+	}
+#else
+    testing::InitGoogleTest(&argc, argv);
+    RUN_ALL_TESTS();
+#endif
     return 0;
 }
 
