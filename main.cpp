@@ -135,7 +135,7 @@ int main(int argc, char **argv) {
 #ifndef TEST_CASE
     while( std::cin >> input_number ){
         if(input_number == 0){
-	        std::cout << std::endl;
+//	        std::cout << std::endl;
 			break;
         }
         std::cout << "Original number was " << input_number <<std::endl;
