@@ -8,15 +8,15 @@
 #ifdef TEST_CASE
 #include <gtest/gtest.h>
 #endif
-std::vector<int> NumberSplit(int number)
+std::vector<unsigned int> NumberSplit(unsigned int number)
 {
-	std::vector<int> vSplit;
+	std::vector<unsigned int> vSplit;
 	for(; number; number/=10)
 		vSplit.push_back( number % 10 );
     return vSplit;
 }
 
-int HBubbleSort(std::vector<int> array)
+int HBubbleSort(std::vector<unsigned int> array)
 {
 	int size = array.size();
     int number = 0;
@@ -35,7 +35,7 @@ int HBubbleSort(std::vector<int> array)
     return number;
 }
 
-int LBubbleSort(std::vector<int> array)
+int LBubbleSort(std::vector<unsigned int> array)
 {
 	int size = array.size();
     int number = 0;
@@ -62,13 +62,13 @@ bool CheckNumber(std::string str) {
 	return true;
 }
 
-static int chain = 0;
-static std::vector<int> leaves;
-static void TestFunction(int max, int min)
+static unsigned int chain = 0;
+static std::vector<unsigned int> leaves;
+static void TestFunction(unsigned int max, unsigned int min)
 {
-    int leave, size;
-    int b_val = max;
-    int l_val = min;
+    unsigned int leave, size;
+    unsigned int b_val = max;
+    unsigned int l_val = min;
 
     leave = b_val - l_val;
     chain ++;
@@ -81,13 +81,13 @@ static void TestFunction(int max, int min)
 	std::cout << std::endl;
 */
     if(size != 0){
-        for(int i=0; i< size; i++){
+        for(unsigned int i=0; i< size; i++){
 			if(leaves[i] == leave)
 				return;
         }
 	}
     leaves.push_back(leave);
-    std::vector<int> r_v = NumberSplit(leave);
+    std::vector<unsigned int> r_v = NumberSplit(leave);
     TestFunction(HBubbleSort(r_v), LBubbleSort(r_v));
 
 }
@@ -95,7 +95,7 @@ static void TestFunction(int max, int min)
 #ifdef TEST_CASE
 TEST(testCase, test0){
     int number = 45321;
-    std::vector<int> v = NumberSplit(number);
+    std::vector<unsigned int> v = NumberSplit(number);
     for(int i; i < v.size(); i++){
        int mod = number % (i * 10);
        EXPECT_EQ(v[i],mod);
@@ -106,13 +106,13 @@ TEST(testCase, test0){
 
 TEST(testCase, test1){
 	static const int arr[] = {3,2,4,5,6,3};
-	std::vector<int> v(arr, arr + sizeof(arr) / sizeof(arr[0]));
+	std::vector<unsigned int> v(arr, arr + sizeof(arr) / sizeof(arr[0]));
     EXPECT_EQ(LBubbleSort(v),233456);
 }
 
 TEST(testCase, test2){
 	static const int arr[] = {3,2,4,5,6,3};
-	std::vector<int> v(arr, arr + sizeof(arr) / sizeof(arr[0]));
+	std::vector<unsigned int> v(arr, arr + sizeof(arr) / sizeof(arr[0]));
     EXPECT_EQ(HBubbleSort(v),654332);
 //    EXPECT_EQ(HBubbleSort(v),564332); // fail test
 }
@@ -134,13 +134,15 @@ int main(int argc, char **argv) {
 
 #ifndef TEST_CASE
     while( std::cin >> input_number ){
-	    std::cout << std::endl;
-        if(input_number == 0)
-			continue;
+        if(input_number == 0){
+	        std::cout << std::endl;
+			break;
+        }
         std::cout << "Original number was " << input_number <<std::endl;
-        std::vector<int> r_v = NumberSplit(input_number);
+        std::vector<unsigned int> r_v = NumberSplit(input_number);
         TestFunction(HBubbleSort(r_v), LBubbleSort(r_v));
         std::cout << "Chain length " << chain << std::endl;
+	    std::cout << std::endl;
         chain = 0;
         input_number = 0;
         leaves.clear();
