@@ -135,6 +135,8 @@ int main(int argc, char **argv) {
 #ifndef TEST_CASE
     while( std::cin >> input_number ){
 	    std::cout << std::endl;
+        if(input_number == 0)
+			continue;
         std::cout << "Original number was " << input_number <<std::endl;
         std::vector<int> r_v = NumberSplit(input_number);
         TestFunction(HBubbleSort(r_v), LBubbleSort(r_v));
