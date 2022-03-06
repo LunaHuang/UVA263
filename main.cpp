@@ -71,7 +71,7 @@ bool CheckNumber(std::string str)
 
 static unsigned int chain = 0;
 static std::vector< unsigned int > leaves;
-static void TestFunction(unsigned int max, unsigned int min)
+static void NumberChain_2(unsigned int max, unsigned int min)
 {
     unsigned int leave, size;
     unsigned int b_val = max;
@@ -89,10 +89,10 @@ static void TestFunction(unsigned int max, unsigned int min)
     }
     leaves.push_back(leave);
     std::vector< unsigned int > r_v = NumberSplit(leave);
-    TestFunction(LHBubbleSort(r_v), HLBubbleSort(r_v));
+    NumberChain_2(LHBubbleSort(r_v), HLBubbleSort(r_v));
 }
 
-static void TestFunction_2(std::vector< unsigned int > number)
+static void NumberChain(std::vector< unsigned int > number)
 {
     unsigned int leave, size;
     unsigned int b_val;
@@ -113,7 +113,7 @@ static void TestFunction_2(std::vector< unsigned int > number)
     }
     leaves.push_back(leave);
     r_v = NumberSplit(leave);
-    TestFunction_2(r_v);
+    NumberChain(r_v);
 }
 
 #ifdef TEST_CASE
@@ -168,8 +168,8 @@ int main(int argc, char **argv)
         }
         std::cout << "Original number was " << input_number << std::endl;
         std::vector< unsigned int > r_v = NumberSplit(input_number);
-        //TestFunction(LHBubbleSort(r_v), HLBubbleSort(r_v));
-        TestFunction_2(r_v);
+        //NumberChain_2(LHBubbleSort(r_v), HLBubbleSort(r_v));
+        NumberChain(r_v);
         std::cout << "Chain length " << chain << std::endl;
         std::cout << std::endl;
         chain = 0;
