@@ -5,8 +5,7 @@
 #include <exception>
 #include <math.h>
 
-//#define TEST_CASE
-#ifdef TEST_CASE
+#ifdef WITH_GTEST
 #include <gtest/gtest.h>
 #endif
 std::vector< unsigned int > NumberSplit(unsigned int number)
@@ -116,7 +115,7 @@ static void NumberChain(std::vector< unsigned int > number)
     NumberChain(r_v);
 }
 
-#ifdef TEST_CASE
+#ifdef WITH_GTEST
 TEST(testCase, test0)
 {
     int number = 45321;
@@ -157,7 +156,7 @@ static int input_number = 0;
 int main(int argc, char **argv)
 {
 
-#ifdef TEST_CASE
+#ifdef WITH_GTEST
     int ret;
     testing::InitGoogleTest(&argc, argv);
     ret = RUN_ALL_TESTS();
