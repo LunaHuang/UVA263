@@ -5,6 +5,7 @@
 #include <exception>
 #include <math.h>
 
+//#define TEST_CASE
 #ifdef TEST_CASE
 #include <gtest/gtest.h>
 #endif
@@ -25,13 +26,9 @@ int LHBubbleSort(std::vector< unsigned int > array)
             if (array[j] > array[j + 1])
                 std::swap(array[j], array[j + 1]);
     }
-
     for (int i = 0; i < size; i++) {
-        //		std::cout << "number " << i << " " << array[i] << " ";
         number = number + array[i] * pow(10, i);
-        //		std::cout << "\n number : " << number <<std::endl;
     }
-
     return number;
 }
 
@@ -44,13 +41,22 @@ int HLBubbleSort(std::vector< unsigned int > array)
             if (array[j] < array[j + 1])
                 std::swap(array[j], array[j + 1]);
     }
-
     for (int i = size - 1; i >= 0; --i) {
-        //		std::cout << "number " << i << " " << array[i] << " ";
         number = number + array[i] * pow(10, i);
-        //		std::cout << "\n number : " << number <<std::endl;
     }
+    return number;
+}
 
+int ReverseOrder(std::vector< unsigned int > array)
+{
+    int size = array.size();
+    int number = 0;
+    for (int i = 0; i < size / 2; i++) {
+        std::swap(array[i], array[size - 1 - i]);
+    }
+    for (int i = 0; i < size; i++) {
+        number = number + array[i] * pow(10, i);
+    }
     return number;
 }
 
@@ -75,12 +81,6 @@ static void TestFunction(unsigned int max, unsigned int min)
     chain++;
     std::cout << b_val << " - " << l_val << " = " << leave << std::endl;
     size = leaves.size();
-    /*
-    std::cout << "leaves size: " << size << std::endl;
-    for(int i=0; i< size; i++)
-		std::cout << " " << leaves[i] << " ";
-	std::cout << std::endl;
-*/
     if (size != 0) {
         for (unsigned int i = 0; i < size; i++) {
             if (leaves[i] == leave)
@@ -90,6 +90,30 @@ static void TestFunction(unsigned int max, unsigned int min)
     leaves.push_back(leave);
     std::vector< unsigned int > r_v = NumberSplit(leave);
     TestFunction(LHBubbleSort(r_v), HLBubbleSort(r_v));
+}
+
+static void TestFunction_2(std::vector< unsigned int > number)
+{
+    unsigned int leave, size;
+    unsigned int b_val;
+    unsigned int l_val;
+
+    b_val = LHBubbleSort(number);
+    std::vector< unsigned int > r_v = NumberSplit(b_val);
+    l_val = ReverseOrder(r_v);
+    leave = b_val - l_val;
+    chain++;
+    std::cout << b_val << " - " << l_val << " = " << leave << std::endl;
+    size = leaves.size();
+    if (size != 0) {
+        for (unsigned int i = 0; i < size; i++) {
+            if (leaves[i] == leave)
+                return;
+        }
+    }
+    leaves.push_back(leave);
+    r_v = NumberSplit(leave);
+    TestFunction_2(r_v);
 }
 
 #ifdef TEST_CASE
@@ -119,41 +143,38 @@ TEST(testCase, test2)
     EXPECT_EQ(LHBubbleSort(v), 654332);
     //    EXPECT_EQ(HBubbleSort(v),564332); // fail test
 }
+
+TEST(testCase, test3)
+{
+    static const int arr[] = { 1, 2, 3, 4, 5, 6 };
+    std::vector< unsigned int > v(arr, arr + sizeof(arr) / sizeof(arr[0]));
+    EXPECT_EQ(ReverseOrder(v), 123456);
+}
+
 #endif
 
 static int input_number = 0;
 int main(int argc, char **argv)
 {
-    /*
-    if( argc != 2) {
-		std::cout << "Please input one number " << std::endl;
-		return false;
-    }
-    if( CheckNumber(argv[1]) == false){
-		std::cout << "Incorrect input, please input number " << std::endl;
-		return false;
-	}
-    int input_number = atoi(argv[1]);
-*/
 
-#ifndef TEST_CASE
+#ifdef TEST_CASE
+    int ret;
+    testing::InitGoogleTest(&argc, argv);
+    ret = RUN_ALL_TESTS();
+#endif
     while (std::cin >> input_number) {
         if (input_number == 0) {
-            //	        std::cout << std::endl;
             break;
         }
         std::cout << "Original number was " << input_number << std::endl;
         std::vector< unsigned int > r_v = NumberSplit(input_number);
-        TestFunction(LHBubbleSort(r_v), HLBubbleSort(r_v));
+        //TestFunction(LHBubbleSort(r_v), HLBubbleSort(r_v));
+        TestFunction_2(r_v);
         std::cout << "Chain length " << chain << std::endl;
         std::cout << std::endl;
         chain = 0;
         input_number = 0;
         leaves.clear();
     }
-#else
-    testing::InitGoogleTest(&argc, argv);
-    RUN_ALL_TESTS();
-#endif
     return 0;
 }
