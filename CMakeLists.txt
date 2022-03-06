@@ -12,8 +12,10 @@ if(WITH_GTEST)
   ADD_DEFINITIONS("-DWITH_GTEST")
 endif()
 
-add_executable(uva263 main.cpp)
 if(WITH_GTEST)
+add_executable(uva263 main.cpp test.cpp)
 target_link_libraries(uva263 GTest::gtest)
+else()
+add_executable(uva263 main.cpp)
 endif()
 
