@@ -16,7 +16,7 @@ std::vector< unsigned int > NumberSplit(unsigned int number)
     return vSplit;
 }
 
-int HBubbleSort(std::vector< unsigned int > array)
+int LHBubbleSort(std::vector< unsigned int > array)
 {
     int size = array.size();
     int number = 0;
@@ -35,7 +35,7 @@ int HBubbleSort(std::vector< unsigned int > array)
     return number;
 }
 
-int LBubbleSort(std::vector< unsigned int > array)
+int HLBubbleSort(std::vector< unsigned int > array)
 {
     int size = array.size();
     int number = 0;
@@ -89,7 +89,7 @@ static void TestFunction(unsigned int max, unsigned int min)
     }
     leaves.push_back(leave);
     std::vector< unsigned int > r_v = NumberSplit(leave);
-    TestFunction(HBubbleSort(r_v), LBubbleSort(r_v));
+    TestFunction(LHBubbleSort(r_v), HLBubbleSort(r_v));
 }
 
 #ifdef TEST_CASE
@@ -109,14 +109,14 @@ TEST(testCase, test1)
 {
     static const int arr[] = { 3, 2, 4, 5, 6, 3 };
     std::vector< unsigned int > v(arr, arr + sizeof(arr) / sizeof(arr[0]));
-    EXPECT_EQ(LBubbleSort(v), 233456);
+    EXPECT_EQ(HLBubbleSort(v), 233456);
 }
 
 TEST(testCase, test2)
 {
     static const int arr[] = { 3, 2, 4, 5, 6, 3 };
     std::vector< unsigned int > v(arr, arr + sizeof(arr) / sizeof(arr[0]));
-    EXPECT_EQ(HBubbleSort(v), 654332);
+    EXPECT_EQ(LHBubbleSort(v), 654332);
     //    EXPECT_EQ(HBubbleSort(v),564332); // fail test
 }
 #endif
@@ -144,7 +144,7 @@ int main(int argc, char **argv)
         }
         std::cout << "Original number was " << input_number << std::endl;
         std::vector< unsigned int > r_v = NumberSplit(input_number);
-        TestFunction(HBubbleSort(r_v), LBubbleSort(r_v));
+        TestFunction(LHBubbleSort(r_v), HLBubbleSort(r_v));
         std::cout << "Chain length " << chain << std::endl;
         std::cout << std::endl;
         chain = 0;
