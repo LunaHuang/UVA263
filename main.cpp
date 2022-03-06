@@ -8,17 +8,17 @@
 #ifdef TEST_CASE
 #include <gtest/gtest.h>
 #endif
-std::vector<unsigned int> NumberSplit(unsigned int number)
+std::vector< unsigned int > NumberSplit(unsigned int number)
 {
-	std::vector<unsigned int> vSplit;
-	for(; number; number/=10)
-		vSplit.push_back( number % 10 );
+    std::vector< unsigned int > vSplit;
+    for (; number; number /= 10)
+        vSplit.push_back(number % 10);
     return vSplit;
 }
 
-int HBubbleSort(std::vector<unsigned int> array)
+int HBubbleSort(std::vector< unsigned int > array)
 {
-	int size = array.size();
+    int size = array.size();
     int number = 0;
     for (int i = size - 1; i > 0; --i) {
         for (int j = 0; j < i; ++j)
@@ -26,18 +26,18 @@ int HBubbleSort(std::vector<unsigned int> array)
                 std::swap(array[j], array[j + 1]);
     }
 
-    for(int i = 0; i < size; i++){
-//		std::cout << "number " << i << " " << array[i] << " ";
-		number = number + array[i] * pow(10, i);
-//		std::cout << "\n number : " << number <<std::endl;
+    for (int i = 0; i < size; i++) {
+        //		std::cout << "number " << i << " " << array[i] << " ";
+        number = number + array[i] * pow(10, i);
+        //		std::cout << "\n number : " << number <<std::endl;
     }
-    
+
     return number;
 }
 
-int LBubbleSort(std::vector<unsigned int> array)
+int LBubbleSort(std::vector< unsigned int > array)
 {
-	int size = array.size();
+    int size = array.size();
     int number = 0;
     for (int i = size - 1; i > 0; --i) {
         for (int j = 0; j < i; ++j)
@@ -45,25 +45,26 @@ int LBubbleSort(std::vector<unsigned int> array)
                 std::swap(array[j], array[j + 1]);
     }
 
-    for(int i = size - 1; i >= 0; --i){
-//		std::cout << "number " << i << " " << array[i] << " ";
-		number = number + array[i] * pow(10, i);
-//		std::cout << "\n number : " << number <<std::endl;
+    for (int i = size - 1; i >= 0; --i) {
+        //		std::cout << "number " << i << " " << array[i] << " ";
+        number = number + array[i] * pow(10, i);
+        //		std::cout << "\n number : " << number <<std::endl;
     }
-    
+
     return number;
 }
 
-bool CheckNumber(std::string str) {
-	for (int i = 0; i < str.length(); i++) {
-		if (std::isdigit(str[i]) == false)
-			return false;
+bool CheckNumber(std::string str)
+{
+    for (int i = 0; i < str.length(); i++) {
+        if (std::isdigit(str[i]) == false)
+            return false;
     }
-	return true;
+    return true;
 }
 
 static unsigned int chain = 0;
-static std::vector<unsigned int> leaves;
+static std::vector< unsigned int > leaves;
 static void TestFunction(unsigned int max, unsigned int min)
 {
     unsigned int leave, size;
@@ -71,56 +72,59 @@ static void TestFunction(unsigned int max, unsigned int min)
     unsigned int l_val = min;
 
     leave = b_val - l_val;
-    chain ++;
-	std::cout << b_val << " - " << l_val << " = " << leave << std::endl;
+    chain++;
+    std::cout << b_val << " - " << l_val << " = " << leave << std::endl;
     size = leaves.size();
-/*
+    /*
     std::cout << "leaves size: " << size << std::endl;
     for(int i=0; i< size; i++)
 		std::cout << " " << leaves[i] << " ";
 	std::cout << std::endl;
 */
-    if(size != 0){
-        for(unsigned int i=0; i< size; i++){
-			if(leaves[i] == leave)
-				return;
+    if (size != 0) {
+        for (unsigned int i = 0; i < size; i++) {
+            if (leaves[i] == leave)
+                return;
         }
-	}
+    }
     leaves.push_back(leave);
-    std::vector<unsigned int> r_v = NumberSplit(leave);
+    std::vector< unsigned int > r_v = NumberSplit(leave);
     TestFunction(HBubbleSort(r_v), LBubbleSort(r_v));
-
 }
 
 #ifdef TEST_CASE
-TEST(testCase, test0){
+TEST(testCase, test0)
+{
     int number = 45321;
-    std::vector<unsigned int> v = NumberSplit(number);
-    for(int i; i < v.size(); i++){
-       int mod = number % (i * 10);
-       EXPECT_EQ(v[i],mod);
-       std::string s = std::to_string(mod);
-       EXPECT_STREQ("mod : %d", s.c_str());
+    std::vector< unsigned int > v = NumberSplit(number);
+    for (int i; i < v.size(); i++) {
+        int mod = number % (i * 10);
+        EXPECT_EQ(v[i], mod);
+        std::string s = std::to_string(mod);
+        EXPECT_STREQ("mod : %d", s.c_str());
     }
 }
 
-TEST(testCase, test1){
-	static const int arr[] = {3,2,4,5,6,3};
-	std::vector<unsigned int> v(arr, arr + sizeof(arr) / sizeof(arr[0]));
-    EXPECT_EQ(LBubbleSort(v),233456);
+TEST(testCase, test1)
+{
+    static const int arr[] = { 3, 2, 4, 5, 6, 3 };
+    std::vector< unsigned int > v(arr, arr + sizeof(arr) / sizeof(arr[0]));
+    EXPECT_EQ(LBubbleSort(v), 233456);
 }
 
-TEST(testCase, test2){
-	static const int arr[] = {3,2,4,5,6,3};
-	std::vector<unsigned int> v(arr, arr + sizeof(arr) / sizeof(arr[0]));
-    EXPECT_EQ(HBubbleSort(v),654332);
-//    EXPECT_EQ(HBubbleSort(v),564332); // fail test
+TEST(testCase, test2)
+{
+    static const int arr[] = { 3, 2, 4, 5, 6, 3 };
+    std::vector< unsigned int > v(arr, arr + sizeof(arr) / sizeof(arr[0]));
+    EXPECT_EQ(HBubbleSort(v), 654332);
+    //    EXPECT_EQ(HBubbleSort(v),564332); // fail test
 }
 #endif
 
 static int input_number = 0;
-int main(int argc, char **argv) {
-/*
+int main(int argc, char **argv)
+{
+    /*
     if( argc != 2) {
 		std::cout << "Please input one number " << std::endl;
 		return false;
@@ -133,24 +137,23 @@ int main(int argc, char **argv) {
 */
 
 #ifndef TEST_CASE
-    while( std::cin >> input_number ){
-        if(input_number == 0){
-//	        std::cout << std::endl;
-			break;
+    while (std::cin >> input_number) {
+        if (input_number == 0) {
+            //	        std::cout << std::endl;
+            break;
         }
-        std::cout << "Original number was " << input_number <<std::endl;
-        std::vector<unsigned int> r_v = NumberSplit(input_number);
+        std::cout << "Original number was " << input_number << std::endl;
+        std::vector< unsigned int > r_v = NumberSplit(input_number);
         TestFunction(HBubbleSort(r_v), LBubbleSort(r_v));
         std::cout << "Chain length " << chain << std::endl;
-	    std::cout << std::endl;
+        std::cout << std::endl;
         chain = 0;
         input_number = 0;
         leaves.clear();
-	}
+    }
 #else
     testing::InitGoogleTest(&argc, argv);
     RUN_ALL_TESTS();
 #endif
     return 0;
 }
-
