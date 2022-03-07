@@ -8,73 +8,38 @@
 #ifdef WITH_GTEST
 #include <gtest/gtest.h>
 #endif
-std::vector< unsigned int > NumberSplit(unsigned int number)
+
+std::string StrLessSort(std::string input)
 {
-    std::vector< unsigned int > vSplit;
-    for (; number; number /= 10)
-        vSplit.push_back(number % 10);
-    return vSplit;
+    std::string input_str = input;
+    std::sort(input_str.begin(), input_str.end(), std::less<char>());
+    return input_str;
 }
 
-int LHBubbleSort(std::vector< unsigned int > array)
+std::string StrReverse(std::string input)
 {
-    int size = array.size();
-    int number = 0;
-    for (int i = size - 1; i > 0; --i) {
-        for (int j = 0; j < i; ++j)
-            if (array[j] > array[j + 1])
-                std::swap(array[j], array[j + 1]);
-    }
-    for (int i = 0; i < size; i++) {
-        number = number + array[i] * pow(10, i);
-    }
-    return number;
-}
-
-int HLBubbleSort(std::vector< unsigned int > array)
-{
-    int size = array.size();
-    int number = 0;
-    for (int i = size - 1; i > 0; --i) {
-        for (int j = 0; j < i; ++j)
-            if (array[j] < array[j + 1])
-                std::swap(array[j], array[j + 1]);
-    }
-    for (int i = size - 1; i >= 0; --i) {
-        number = number + array[i] * pow(10, i);
-    }
-    return number;
-}
-
-int ReverseOrder(std::vector< unsigned int > array)
-{
-    int size = array.size();
-    int number = 0;
-    for (int i = 0; i < size / 2; i++) {
-        std::swap(array[i], array[size - 1 - i]);
-    }
-    for (int i = 0; i < size; i++) {
-        number = number + array[i] * pow(10, i);
-    }
-    return number;
-}
-
-bool CheckNumber(std::string str)
-{
-    for (int i = 0; i < str.length(); i++) {
-        if (std::isdigit(str[i]) == false)
-            return false;
-    }
-    return true;
+    std::string str = input;
+    std::reverse(str.begin(), str.end());
+    return str;
 }
 
 static unsigned int chain = 0;
 static std::vector< unsigned int > leaves;
-static void NumberChain_2(unsigned int max, unsigned int min)
+
+static void NumberChain(std::string number)
 {
     unsigned int leave, size;
-    unsigned int b_val = max;
-    unsigned int l_val = min;
+    unsigned int b_val = 0;
+    unsigned int l_val = 0;
+    std::string min_nu;
+    std::string max_nu;
+
+    min_nu.clear();
+    max_nu.clear();
+    min_nu = StrLessSort(number);
+    l_val = std::stoul (min_nu,nullptr,10);
+    max_nu = StrReverse(min_nu);
+    b_val = std::stoul (max_nu,nullptr,10);
 
     leave = b_val - l_val;
     chain++;
@@ -87,55 +52,29 @@ static void NumberChain_2(unsigned int max, unsigned int min)
         }
     }
     leaves.push_back(leave);
-    std::vector< unsigned int > r_v = NumberSplit(leave);
-    NumberChain_2(LHBubbleSort(r_v), HLBubbleSort(r_v));
-}
-
-static void NumberChain(std::vector< unsigned int > number)
-{
-    unsigned int leave, size;
-    unsigned int b_val;
-    unsigned int l_val;
-
-    b_val = LHBubbleSort(number);
-    std::vector< unsigned int > r_v = NumberSplit(b_val);
-    l_val = ReverseOrder(r_v);
-    leave = b_val - l_val;
-    chain++;
-    std::cout << b_val << " - " << l_val << " = " << leave << std::endl;
-    size = leaves.size();
-    if (size != 0) {
-        for (unsigned int i = 0; i < size; i++) {
-            if (leaves[i] == leave)
-                return;
-        }
-    }
-    leaves.push_back(leave);
-    r_v = NumberSplit(leave);
+    std::string r_v = std::to_string(leave);
     NumberChain(r_v);
 }
 
-static int input_number = 0;
 int main(int argc, char **argv)
 {
-
+    std::string input_number;
+    
 #ifdef WITH_GTEST
     int ret;
     testing::InitGoogleTest(&argc, argv);
     ret = RUN_ALL_TESTS();
 #endif
     while (std::cin >> input_number) {
-        if (input_number == 0) {
-            break;
+        if (std::stoul(input_number) == 0) {
+            return 0;
         }
         std::cout << "Original number was " << input_number << std::endl;
-        std::vector< unsigned int > r_v = NumberSplit(input_number);
-        //NumberChain_2(LHBubbleSort(r_v), HLBubbleSort(r_v));
-        NumberChain(r_v);
+        NumberChain(input_number);
         std::cout << "Chain length " << chain << std::endl;
         std::cout << std::endl;
         chain = 0;
-        input_number = 0;
+        input_number.clear();
         leaves.clear();
     }
     return 0;
